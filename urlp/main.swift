@@ -28,12 +28,10 @@ func url2plist(url: String) -> [String: Any]? {
         "password": components.password ?? ""
     ]
     
-    // Only add the port if it exists.
     if let port = components.port {
         plist["port"] = port
     }
     
-    // Add query items if any.
     if let queryItems = components.queryItems, !queryItems.isEmpty {
         plist["queryItems"] = queryItems.map { ["name": $0.name, "value": $0.value ?? ""] }
     }
@@ -52,20 +50,21 @@ let url = CommandLine.arguments[2]
 
 let plist = url2plist(url: url)
 
-if format == "-plist" {
+switch(format){
+case "-plist":
     if let plistData = try? PropertyListSerialization.data(fromPropertyList: plist!, format: .xml, options: 0),
        let plistString = String(data: plistData, encoding: .utf8) {
         print(plistString)
     } else {
         print("Error: Could not serialize plist.")
     }
-} else if format == "-json" {
+case "-json":
     if let jsonData = try? JSONSerialization.data(withJSONObject: plist!, options: [.prettyPrinted]),
        let jsonString = String(data: jsonData, encoding: .utf8) {
         print(jsonString)
     } else {
         print("Error: Could not serialize JSON.")
     }
-} else {
+default:
     showUsage()
 }
