@@ -113,3 +113,6 @@ urlp -json "https://user:pass@example.com:8080/path?query=item&foo=bar#fragment"
 }
 ```
 ---
+
+## Demo
+![Demonstration](media/demo.gif)
